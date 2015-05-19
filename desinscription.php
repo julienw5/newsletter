@@ -1,4 +1,4 @@
-<?php
+<?php require_once 'config.php';
     if($_GET['tru']==1)
     {
  
@@ -47,18 +47,24 @@ Entrez votre adresse e-mail : <input type="text" name="email" size="25" /><br />
     }
     elseif($_GET['tru']==2) // Sinon, si la variable $_GET['tru'] est égale à 2.
     {
-    mysql_connect("localhost", "admin", "");
-    mysql_select_db("db");
-    $email_mail = mysql_real_escape_string($_COOKIE['email']);
-    $email_entre = mysql_real_escape_string($_POST['email']);
+    // mysql_connect("localhost", "aeria_app_be", "imdY6pMG");
+    // mysql_select_db("aeria_app_be");
+       $email_mail = $_COOKIE['email'];
+       $email_entre =$_POST['email'];
  
         if($email_entre==$email_mail) // Si les deux adresses e-mail sont identiques.
         {
-        mysql_query("DELETE FROM newsletter WHERE email='" . $email_entre ."'"); //On supprime l'adresse de la BDD.
+
+        $prepare = $bdd->prepare("DELETE FROM newsletter WHERE email=:email");
+        //On supprime l'adresse de la BDD.
+        $email = $_GET['email'];  
+        $prepare->bindParam(':email', $email);
+
+        $prepare->execute();
  
-        echo "Vous avez bien été désinscrit de la newsletter de MonSite.fr ! Vous allez être redirigé dans 1 seconde.";
- 
+        echo "Vous avez bien été désinscrit de la newsletter de aeria-app ! Vous allez être redirigé dans 1 seconde.";
         }
+
         else
         {
         echo "Vous n'avez pas entré la bonne adresse e-mail !!";

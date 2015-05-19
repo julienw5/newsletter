@@ -1,4 +1,4 @@
-<?php
+<?php require_once 'config.php';
     if($_GET['tru']==1)
     {
  
@@ -47,14 +47,20 @@ Entrez votre e-mail : <input type="text" name="email" size="25" /><br />
     }
 elseif($_GET['tru']==2) // Sinon, si la variable $_GET['tru'] est égale à 2.
     {
-    mysql_connect("localhost", "root", "");
-    mysql_select_db("db");
-    $email_mail = mysql_real_escape_string($_COOKIE['email']);
-    $email_entre = mysql_real_escape_string($_POST['email']);
+
+    $email_mail = $_COOKIE['email'];
+    $email_entre = $_POST['email'];
+
+
  
         if($email_entre==$email_mail) // Si les deux adresses e-mail sont identiques.
         {
-        mysql_query("INSERT INTO newsletter VALUES('" . $email_entre . "')"); // On l'inscrit dans la base de données MySQL.
+        $prepare = $bdd->prepare("INSERT INTO newsletter VALUES email=:email");
+        //On ajoute l'adresse de la BDD.
+        $email = $_GET['email'];  
+        $prepare->bindParam(':email', $email);
+
+        $prepare->execute();
  
         echo "Vous avez bien été inscrit à la newsletter de aeria-app ! Vous allez être redirigé dans 1 seconde.";
  

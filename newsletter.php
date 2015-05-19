@@ -1,3 +1,4 @@
+<?php require_once 'config.php'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
 <head>
@@ -23,13 +24,14 @@
 <p align=center><font size="6"><font color="red">Envoi de la newsletter</font></font></p>
  
 <?php
-// On se connecte.
-mysql_connect("localhost", "root", "");
-mysql_select_db("db");
+
 if(isset($_POST['message'])) //On a tapé le message.
 { 
 // On récupère les 5 dernières news
-$news = mysql_query('SELECT contenu,timestamp FROM news ORDER BY id DESC LIMIT 0, 5');
+// $news = mysql_query('SELECT contenu,timestamp FROM news ORDER BY id DESC LIMIT 0, 5');
+ $news = $bdd->prepare('SELECT contenu,timestamp FROM news ORDER BY id DESC LIMIT 0, 5');
+        $news->execute();
+        $data = $pdo->fetchAll();
  
 $fichier_message = '<html>
 <head>
@@ -39,10 +41,8 @@ $fichier_message = '<html>
 <font face="verdana"><font color="white"><font size="5"><p align="center"><font color="red"><u>Balzac61</u></font></p></font>
 <font size="3">' . $_POST['message'] . '<br /><br />
 <p align="left">Voici les dernières news de aeria-app :<br /><ul>'; //On définit le message.
- 
-    while($donnee = mysql_fetch_assoc($news)) 
-    {
-    $fichier_message .= '<li>'.$donnee["contenu"].'(le'.date("D, d M Y H:i:s",$donnee["timestamp"]).')</li>'; //On ajoute les news au message.
+    foreach ($data as $key => $value) 
+    $fichier_message .= '<li>'.$value["contenu"].'(le'.date("D, d M Y H:i:s",$value["timestamp"]).')</li>'; //On ajoute les news au message.
     }
  
 $fichier_message .= '</ul></body>
@@ -50,14 +50,21 @@ $fichier_message .= '</ul></body>
  
  
 //On récupère de la table newsletter les personnes inscrites.
-$liste_vrac = mysql_query("SELECT email FROM newsletter");
- 
+// $liste_vrac = mysql_query("SELECT email FROM newsletter");
+
+$liste_vrac = $bdd->prepare("SELECT email FROM newsletter");
+$liste_vrac->execute();
+$data = $pdo->fetchAll();
+foreach ($data as $key => $value) {
+
+
+
 //On définit la liste des inscrits.
 $liste = 'julienw5@hotmail.com';
-    while ($donnees = mysql_fetch_assoc($liste_vrac))
+    foreach ($data as $key => $value) 
     {
     $liste .= ','; //On sépare les adresses par une virgule.
-    $liste .= $donnees['email'];
+    $liste .= $value['email'];
     }
 $message = $fichier_message;
 $destinataire = 'julienw5@hotmail.com'; //On adresse une copie a l'administrateur.
@@ -100,13 +107,15 @@ Envoi de la newsletter réussi.
 </tr>
 <?php
  
-$liste_inscrits_vrac = mysql_query("SELECT email FROM newsletter"); //On récupère la table newsletter en vrac.
-    while ($donnees = mysql_fetch_assoc($liste_inscrits_vrac))
-    {
+// $liste_inscrits_vrac = mysql_query("SELECT email FROM newsletter"); //On récupère la table newsletter en vrac.
+$liste_inscrits_vrac = $bdd->prepare("SELECT email FROM newsletter");
+$liste_inscrits_vrac->execute();
+$data = $pdo->fetchAll();
+foreach ($data as $key => $value) {
 ?>
  
 <tr>
-<td><?php echo ($donnees['email']); ?></td>
+<td><?php echo ($value['email']); ?></td>
 </tr>
  
 <?php
