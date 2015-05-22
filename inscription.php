@@ -2,7 +2,7 @@
     if($_GET['tru']==1)
     {
  
-    setcookie("email", $_GET['email'], time()+25); // On crée un cookie qui expirera 25 secondes plus tard pour des raisons de sécurité.
+    setcookie("email", $_GET['email'], time()+25); // cookie expirera 25 secondes plus tard pour des raisons de sécurité.
     }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

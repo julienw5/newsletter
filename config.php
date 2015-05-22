@@ -1,11 +1,8 @@
 <?php
 
-/******************************************************
-----------------Configuration Obligatoire--------------
-Veuillez modifier les variables ci-dessous pour que l'
-espace membre puisse fonctionner correctement.
-******************************************************/
-// int error_reporting (E_ALL);
+error_reporting (E_ALL ^E_NOTICE);
+ ini_set( 'display_errors','1');
+ 
 $host = "aeria-app.be.mysql";
 $dbname = "aeria_app_be";
 $user = "aeria_app_be";
@@ -18,3 +15,4 @@ try
 	die('Error : '.$e->getMessage());
 }
 
+?>

@@ -38,18 +38,33 @@ $fichier_message = '<html>
    <title>Newsletter de aeria-app</title>
 </head>
 <body bgcolor="black">
-<font face="verdana"><font color="white"><font size="5"><p align="center"><font color="red"><u>Balzac61</u></font></p></font>
-<font size="3">' . $_POST['message'] . '<br /><br />
-<p align="left">Voici les dernières news de aeria-app :<br /><ul>'; //On définit le message.
+
+<font face="verdana">
+    <font color="white">
+        <font size="5">
+            <p align="center">
+                <u>
+                    Coucou
+                </u>
+            </p>
+        </font>
+    </font>
+    <font size="3">' . $_POST['message'] . '<br /><br />
+        <p align="left">Voici les dernières news de aeria-app :<br />
+        </p>
+    </font>
+</font>
+                    <ul>'; //définition du message.
+
     foreach ($data as $key => $value) 
-    $fichier_message .= '<li>'.$value["contenu"].'(le'.date("D, d M Y H:i:s",$value["timestamp"]).')</li>'; //On ajoute les news au message.
+    $fichier_message .= '<li>'.$value["contenu"].'(le'.date("D, d M Y H:i:s",$value["timestamp"]).')</li>'; //ajout des news au message.
     }
  
 $fichier_message .= '</ul></body>
-</html>'; //On termine le message.
+</html>'; //Fin du message.
  
  
-//On récupère de la table newsletter les personnes inscrites.
+//Récupération de la table newsletter, les personnes inscrites.
 // $liste_vrac = mysql_query("SELECT email FROM newsletter");
 
 $liste_vrac = $bdd->prepare("SELECT email FROM newsletter");
@@ -59,24 +74,24 @@ foreach ($data as $key => $value) {
 
 
 
-//On définit la liste des inscrits.
+//Définition de la liste des inscrits.
 $liste = 'julienw5@hotmail.com';
     foreach ($data as $key => $value) 
     {
-    $liste .= ','; //On sépare les adresses par une virgule.
+    $liste .= ','; //Séparation des adresses par une virgule.
     $liste .= $value['email'];
     }
 $message = $fichier_message;
-$destinataire = 'julienw5@hotmail.com'; //On adresse une copie a l'administrateur.
+$destinataire = 'julienw5@hotmail.com'; //copie a l'administrateur.
  
 $date = date("d/m/Y");
  
-$objet = "Newsletter de aeria-app du $date"; //On définit l'objet qui contient la date.
+$objet = "Newsletter de aeria-app du $date"; //définition de l'objet qui contient la date.
  
 //On définit le reste des paramètres.
 $headers  = 'MIME-Version: 1.0' . '\r\n';
 $headers .= 'Content-type: text/html; charset=iso-8859-1' . '\r\n';
-$headers .= 'From: julienw5@hotmail.com' . '\r\n'; //On définit l'expéditeur.
+$headers .= 'From: julienw5@hotmail.com' . '\r\n'; //Définition de l'expéditeur.
 $headers .= 'Bcc:' . $liste . '' . '\r\n'; //On définit les destinataires en copie cachée pour qu'ils ne puissent pas voir les adresses des autres inscrits.
  
     //On envoie l'e-mail.
